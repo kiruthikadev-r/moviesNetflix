@@ -1,0 +1,10 @@
+.slide-Item {
+  height: 300px;
+  width: 22%;
+  padding: 10px;
+}
+.slide-Img {
+  height: 100%;
+  width: 100%;
+  border-radius: 10px;
+}

@@ -1,0 +1,44 @@
+.search-ContentDiv {
+  height: 76vh;
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.initial-SearchPara {
+  color: white;
+  font-family: 'Roboto';
+  font-size: 20px;
+  font-weight: bold;
+}
+.no-VideoImg {
+  height: 200px;
+  width: 200px;
+}
+.search-result-Ul {
+  list-style-type: none;
+  padding: 30px;
+  margin: 0px;
+  height: 100%;
+  background-color: black;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.result-list-item {
+  height: 300px;
+  width: 18.5%;
+  padding: 20px;
+}
+.thumbnail-img {
+  height: 100%;
+  width: 100%;
+  border-radius: 10px;
+}
+.search-div {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  background-color: black;
+}

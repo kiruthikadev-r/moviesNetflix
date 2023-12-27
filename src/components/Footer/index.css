@@ -1,0 +1,26 @@
+.footer-div {
+  background-color: black;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+.btns-div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.icon-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  margin-right: 10px;
+}
+.contact-us {
+  color: #ffffff;
+  font-family: 'Roboto';
+  font-weight: bold;
+  font-size: 12px;
+}
