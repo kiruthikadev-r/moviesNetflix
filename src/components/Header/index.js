@@ -1,120 +1,137 @@
 import {Component} from 'react'
-import {Link, withRouter} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import {HiOutlineSearch} from 'react-icons/hi'
+import {AiFillCloseCircle} from 'react-icons/ai'
+import {MdMenuOpen} from 'react-icons/md'
 import './index.css'
 
 class Header extends Component {
-  state = {search: false}
+  state = {showMenu: false, currentPath: ''}
 
-  onClickSearchBtn = () => {
-    this.setState({search: true})
+  componentDidMount() {
+    const path = window.location.pathname
+    this.setState({currentPath: path})
   }
 
-  onSearchInput = event => {
-    const {searchInputEvent} = this.props
-    searchInputEvent(event.target.value)
+  showSearchInput = () => {
+    const {currentPath} = this.state
+    return currentPath === '/search'
   }
 
-  onSearching = () => {
-    const {onClickSearchIcon} = this.props
-    onClickSearchIcon()
+  onShowSearchInput = () => {
+    const {getSearchApiData} = this.props
+    const showInput = this.showSearchInput()
+    if (showInput) {
+      getSearchApiData()
+    }
   }
 
-  //   onHomeItem = () => {
-  //     this.setState({activeItem: 'home'})
-  //   }
+  toggleMenuItems = () => {
+    this.setState(prevState => ({showMenu: !prevState.showMenu}))
+  }
 
-  //   onPopularItem = () => {
-  //     this.setState({activeItem: 'popular'})
-  //   }
+  onChangeSearchInput = event => {
+    const {changeSearchInput} = this.props
+    changeSearchInput(event.target.value)
+  }
+
+  onKeyDownEnter = event => {
+    const {getSearchApiData} = this.props
+    if (event.key === 'Enter') {
+      getSearchApiData()
+    }
+  }
 
   render() {
-    const {search, searchInput} = this.state
-    const {location} = this.props
-    console.log(location.pathname)
+    const {showMenu, currentPath} = this.state
+    const showInput = this.showSearchInput()
+    const homeClassName = currentPath === '/' ? 'selected' : null
+    const popularClassName = currentPath === '/popular' ? 'selected' : null
+    const accountClassName = currentPath === '/account' ? 'selected' : null
     return (
-      <div className="header-div">
-        <div className="img-routes">
-          <Link to="/">
-            <img
-              className="website-logo"
-              src="https://res.cloudinary.com/dksp7vfwl/image/upload/v1701673304/Movies%20App/Group_7399_z86vw3.png"
-              alt="website logo"
-            />
-          </Link>
-          <ul className="route-list">
+      <nav>
+        <div className="navbar">
+          <div className="navbar-logo-link-container">
             <Link to="/">
-              <li
-                className="route-item"
-                key="home"
-                onClick={this.onHomeItem}
-                style={{
-                  textDecoration:
-                    location.pathname === '/' ? 'underline' : 'none',
-                }}
-              >
-                Home
-              </li>
-            </Link>
-            <Link to="/popular">
-              <li
-                className="route-item"
-                key="popular"
-                onClick={this.onPopularItem}
-                style={{
-                  textDecoration:
-                    location.pathname === '/popular' ? 'underline' : 'none',
-                }}
-              >
-                Popular
-              </li>
-            </Link>
-          </ul>
-        </div>
-        <div className="search-account-div">
-          {search || location.pathname === '/search' ? (
-            <div className="search-cont">
-              <input
-                className="search-input"
-                type="search"
-                onChange={this.onSearchInput}
-                placeholder="search"
-                value={searchInput}
+              <img
+                src="https://res.cloudinary.com/dc2b69ycq/image/upload/v1669787785/Movies%20App/Movies_Logo_nu3gsl.png"
+                alt="website logo"
+                className="website-logo"
               />
-              <button
-                className="search-btn"
-                onClick={this.onSearching}
-                testid="searchButton"
-                type="button"
-              >
-                <HiOutlineSearch size="20px" color="white" />
-              </button>
-            </div>
-          ) : (
-            <Link to="/search">
-              <button
-                className="search-only-btn"
-                type="button"
-                testid="searchButton"
-              >
-                <HiOutlineSearch
-                  size={20}
-                  color="white"
-                  onClick={this.onClickSearchBtn}
-                />
-              </button>
             </Link>
-          )}
-          <Link to="/account">
-            <img
-              className="profile-image"
-              src="https://res.cloudinary.com/dksp7vfwl/image/upload/v1701672514/Movies%20App/Avatar_f4h7dy.png"
-              alt="profile"
-            />
-          </Link>
+
+            <ul className="header-link-container">
+              <Link to="/" className="route-link">
+                <li className={`header-link ${homeClassName}`}>Home</li>
+              </Link>
+              <Link to="/popular" className="route-link">
+                <li className={`header-link ${popularClassName}`}>Popular</li>
+              </Link>
+            </ul>
+          </div>
+          <div className="search-and-avatar">
+            <div className="search-container">
+              {showInput && (
+                <input
+                  type="search"
+                  className="search-input"
+                  onChange={this.onChangeSearchInput}
+                  onKeyDown={this.onKeyDownEnter}
+                />
+              )}
+              <Link to="/search">
+                <button
+                  type="button"
+                  className="search-button"
+                  onClick={this.onShowSearchInput}
+                  testid="searchButton"
+                >
+                  <HiOutlineSearch size={18} color="#ffffff" />
+                </button>
+              </Link>
+            </div>
+            <Link to="/account">
+              <img
+                src="https://res.cloudinary.com/dc2b69ycq/image/upload/v1669785109/Movies%20App/Vector_Avatar1_hiwft7.png"
+                alt="profile"
+                className="avatar-image"
+              />
+            </Link>
+            <button
+              type="button"
+              className="menu-button"
+              onClick={this.toggleMenuItems}
+            >
+              <MdMenuOpen />
+            </button>
+          </div>
         </div>
-      </div>
+
+        {showMenu && (
+          <ul className="menu-link-container">
+            <Link to="/" className="route-link">
+              <li className={`menu-link ${homeClassName}`}>Home</li>
+            </Link>
+            <Link to="/popular" className="route-link">
+              <li className={`menu-link ${popularClassName}`}>Popular</li>
+            </Link>
+            <Link to="/account" className="route-link">
+              <li className={`menu-link ${accountClassName}`}>Account</li>
+            </Link>
+            <li>
+              <button
+                type="button"
+                className="close-button"
+                onClick={this.toggleMenuItems}
+              >
+                <AiFillCloseCircle />
+              </button>
+            </li>
+          </ul>
+        )}
+      </nav>
     )
   }
 }
-export default withRouter(Header)
+
+export default Header
